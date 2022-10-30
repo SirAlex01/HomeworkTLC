@@ -18,7 +18,7 @@ main(int argc, char* argv[])
 {
 
 /*
-ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
+ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI//
 
 */
     bool verbose=false;
