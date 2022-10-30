@@ -18,24 +18,22 @@ main(int argc, char* argv[])
 /*
 ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
-  LogComponentEnable ("PacketSink", LOG_LEVEL_ALL);
-  LogComponentEnable ("TcpL4Protocol", LOG_LEVEL_ALL);
-  LogComponentEnable ("OnOffApplication", LOG_LEVEL_ALL);
-  */
+*/
+    bool verbose=false;
+    if (verbose) {
+      LogComponentEnable ("PacketSink", LOG_LEVEL_ALL);
+      LogComponentEnable ("TcpL4Protocol", LOG_LEVEL_ALL);
+      LogComponentEnable ("Ipv4Interface", LOG_LEVEL_ALL);
+      LogComponentEnable ("OnOffApplication", LOG_LEVEL_ALL);
+    }
     //
     // Allow the user to override any of the defaults and the above Bind() at
     // run-time, via command-line arguments
     //
-  //  bool verbose=true;
 
     unsigned nCsma1=2;
     unsigned nCsma2=2;
-    /*
-    if (verbose) {
-        LogComponentEnable ("UdpEchoClientApplication", LOG_LEVEL_ALL);
-        LogComponentEnable ("UdpEchoServerApplication", LOG_LEVEL_ALL);
-    }
-    */
+ 
     //
     // QUI VENGONO CREATI TUTTI I NODI DELLA TOPOLOGIA, LA NUMERAZIONE RIMANE COERENTE ANCHE NEL LOGGER
     //
@@ -110,18 +108,9 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
     //
     // We've got the "hardware" in place.  Now we need to add IP addresses.
     // 
-//csma interfaces  
-
-    Ipv4AddressHelper address; 
-    address.SetBase("192.138.1.0", "/24");
-    Ipv4InterfaceContainer csma1Interfaces=address.Assign(csma1Devices);
-
-    address.SetBase("192.138.2.0", "/24");
-    Ipv4InterfaceContainer csma2Interfaces=address.Assign(csma2Devices);
-    
 //p2p interfaces
 
-     
+    Ipv4AddressHelper address; 
     address.SetBase("10.0.1.0", "/30");
     Ipv4InterfaceContainer l0Interfaces=address.Assign(l0Devices);
     address.SetBase("10.0.2.0", "/30");
@@ -131,6 +120,18 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
     address.SetBase("10.0.4.0", "/30");
     Ipv4InterfaceContainer l3Interfaces=address.Assign(l3Devices);
     NS_LOG_INFO("Create Applications.");
+
+
+//csma interfaces  
+
+    address.SetBase("192.138.1.0", "/24");
+    Ipv4InterfaceContainer csma1Interfaces=address.Assign(csma1Devices);
+
+    address.SetBase("192.138.2.0", "/24");
+    Ipv4InterfaceContainer csma2Interfaces=address.Assign(csma2Devices);
+    
+    Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+
     
    
  //DA QUI IN POI IL CODICE È POCO PIÙ DI UNA BOZZA OTTENUTA COPIANDO E INCOLLANDO PARTI DI CODICE VISTE A LEZIONE
@@ -150,13 +151,13 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       OnOffHelper clientHelper("ns3::TcpSocketFactory",Address());
       clientHelper.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
       clientHelper.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
-      AddressValue clientAddress(InetSocketAddress(l2Interfaces.GetAddress(0), port));
+      AddressValue clientAddress(InetSocketAddress(csma1Interfaces.GetAddress(2), port));
       clientHelper.SetAttribute("Remote", clientAddress);
       clientHelper.SetAttribute("PacketSize", UintegerValue(1500));
       ApplicationContainer clientApp;
       clientApp.Add(clientHelper.Install(n4n5.Get(0)));
       clientApp.Start(Seconds(3.0));
-      clientApp.Start(Seconds(15.0));
+      clientApp.Stop(Seconds(15.0));
     }
     else if  (configuration==1) {
       exit(0);
@@ -182,7 +183,6 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
   client.SetFill (apps.Get (0), fill, sizeof(fill), 1024);
 #endif
 
-  //  Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
 // HO ATTIVATO UN PO' DI PCAP, MA TUTTE LE CATTURE SONO VUOTE :(
   //???  Ipv4GlobalRoutingHelper::PopulateRoutingTables();
