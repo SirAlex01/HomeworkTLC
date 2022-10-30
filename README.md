@@ -6,3 +6,7 @@ fatelo per condividere le modifiche alla fine
 git add nomefile: aggiunge file a repository
 git commit: salva progressi e permette di commentarli 
 git commit -m 'testo' :salva modifiche con testo come commento
+
+
+
+prova push
