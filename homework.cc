@@ -1,5 +1,4 @@
 
-
 #include "ns3/applications-module.h"
 #include "ns3/core-module.h"
 #include "ns3/csma-module.h"
@@ -132,7 +131,7 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
     
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
-    
+    AsciiTraceHelper ascii;
    
  //DA QUI IN POI IL CODICE È POCO PIÙ DI UNA BOZZA OTTENUTA COPIANDO E INCOLLANDO PARTI DI CODICE VISTE A LEZIONE
  // È LA PARTE PIÙ CRITICA: NON FUNZIONA NEMMENO!  
@@ -158,9 +157,76 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       clientApp.Add(clientHelper.Install(n4n5.Get(0)));
       clientApp.Start(Seconds(3.0));
       clientApp.Stop(Seconds(15.0));
+
+      //ascii trace
+      //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
+      csma1.EnableAscii("task1-0-2",csma1Devices.Get(2));
+      l2.EnableAscii("task1-0-4",l2Devices.Get(0));
+
+
+      // PCAP NODI RICHIESTI
+      csma1.EnablePcap("task1-0-3",csma1Devices.Get(1));
+      l3.EnablePcap("task1-0-5",l3Devices.Get(0));
+      l3.EnablePcap("task1-0-6",l3Devices.Get(1));
+      csma2.EnablePcap("task1-0-6 prova",csma2Devices.Get(0),true);
+
+      
     }
     else if  (configuration==1) {
-      exit(0);
+      // creazione sink1 su n2
+      short unsigned port1 = 2400;
+      Address sinkLocalAddress1(InetSocketAddress(Ipv4Address::GetAny(), port1));
+      PacketSinkHelper sinkHelper1("ns3::TcpSocketFactory", sinkLocalAddress1);
+      ApplicationContainer sinkApp;
+      sinkApp.Add(sinkHelper1.Install(n0n1n2.Get(2)));
+
+      // creazione sink2 su n0
+      short unsigned port2 = 7777;
+      Address sinkLocalAddress2(InetSocketAddress(Ipv4Address::GetAny(), port2));
+      PacketSinkHelper sinkHelper2("ns3::TcpSocketFactory", sinkLocalAddress2);
+      sinkApp.Add(sinkHelper2.Install(n0n1n2.Get(0)));
+      sinkApp.Start(Seconds(0.0));
+      sinkApp.Stop(Seconds(20.0));
+
+      //creazione onoffclient1 su n4
+      //ATTENZIONE:PENSO CI SIA UN ERRORE NEL TESTO, DICE CHE QUESTO INVIA DATI A n1 MA SE IL SERVER
+      //È SU n0 NON HA SENSO.
+
+      OnOffHelper clientHelper1("ns3::TcpSocketFactory",Address());
+      clientHelper1.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+      clientHelper1.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
+      AddressValue clientAddress1(InetSocketAddress(csma1Interfaces.GetAddress(0), port2));
+      clientHelper1.SetAttribute("Remote", clientAddress1);
+      clientHelper1.SetAttribute("PacketSize", UintegerValue(2500));
+      ApplicationContainer clientApp1;
+      clientApp1.Add(clientHelper1.Install(n4n5.Get(0)));
+      clientApp1.Start(Seconds(5.0));
+      clientApp1.Stop(Seconds(15.0));
+
+      //creazione onoffclient2 su n8
+
+      OnOffHelper clientHelper2("ns3::TcpSocketFactory",Address());
+      clientHelper2.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+      clientHelper2.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
+      AddressValue clientAddress2(InetSocketAddress(csma1Interfaces.GetAddress(2), port1));
+      clientHelper2.SetAttribute("Remote", clientAddress2);
+      clientHelper2.SetAttribute("PacketSize", UintegerValue(4500));
+      ApplicationContainer clientApp2;
+      clientApp2.Add(clientHelper2.Install(n6n7n8.Get(2)));
+      clientApp2.Start(Seconds(2.0));
+      clientApp2.Stop(Seconds(9.0));
+
+      //ascii trace
+      //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
+      csma1.EnableAscii("task1-1-2",csma1Devices.Get(2));
+      l2.EnableAscii("task1-1-4",l2Devices.Get(0));
+      csma1.EnableAscii("task1-1-0",csma1Devices.Get(0));
+      csma2.EnableAscii("task1-1-4",csma2Devices.Get(2));
+
+      // PCAP NODI RICHIESTI
+      csma1.EnablePcap("task1-1-3",csma1Devices.Get(1));
+      l3.EnablePcap("task1-1-5",l3Devices.Get(0));
+      csma2.EnablePcap("task1-1-6",csma2Devices.Get(0),true);
     }
     else if  (configuration==2) {
       exit(0);
@@ -184,16 +250,7 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 #endif
 
 
-// HO ATTIVATO UN PO' DI PCAP, MA TUTTE LE CATTURE SONO VUOTE :(
-  //???  Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
-
-    l1.EnablePcap("l1",n3n6,true);
-    l3.EnablePcap("l3",n5n6,true);
-
-
-    csma1.EnablePcapAll("csma1",true);
-    csma2.EnablePcap("csma2",csma2Devices.Get(0),true);
 
     //
     // Now, do the actual simulation.
@@ -205,3 +262,4 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
     return 0;
 }
+
