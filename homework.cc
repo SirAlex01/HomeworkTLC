@@ -7,9 +7,6 @@
 
 using namespace ns3;
 
-#include <iostream>
-
-using namespace std;
 
 NS_LOG_COMPONENT_DEFINE("Homework");
 
@@ -21,34 +18,20 @@ main(int argc, char* argv[])
 ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
 */
+    //Qui l'utente può scegliere la configurazione e verbose
+    // passando come parametro "configuration=configurazione prescelta(0,1,2) verbose=false,true"
+    // esempio: /ns3 run homework -- configuration=1 verbose=false
     bool verbose=false;
+    int configuration=0;
+    CommandLine cmd;
+    cmd.AddValue("configuration","Scegli Configuration",configuration);
+    cmd.AddValue("configuration","Scegli verbose",verbose);
     if (verbose) {
       LogComponentEnable ("PacketSink", LOG_LEVEL_ALL);
       LogComponentEnable ("TcpL4Protocol", LOG_LEVEL_ALL);
       LogComponentEnable ("Ipv4Interface", LOG_LEVEL_ALL);
       LogComponentEnable ("OnOffApplication", LOG_LEVEL_ALL);
     }
-    //Qui l'utente può scegliere la configurazione passando come parametro "configuration=configurazione prescelta(0,1,2)"
-    // esempio: /ns3 run homework -- configuration=1
-    CommandLine cmd(__FILE__);
-    cmd.Parse(argc, argv);
-    std::string str(argv[1]);
-    char a = str.back();
-    int configuration;
-    if(a=='0'){
-        configuration=0;
-    }
-    else if(a=='1'){
-        configuration=1;
-    }
-    else if(a=='2'){
-        configuration=2;
-    }
-    else{
-        perror ("configuration può assumere solo i valori interi tra 0 e 2");
-        exit(EXIT_FAILURE);
-    }
-
 
     //
     // Allow the user to override any of the defaults and the above Bind() at
@@ -254,6 +237,10 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
     }
     else if  (configuration==2) {
       exit(0);
+    }
+    else{
+      perror ("configuration può assumere solo i valori interi tra 0 e 2");
+      exit(EXIT_FAILURE);
     }
 
 #if 0
