@@ -22,7 +22,7 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
     // passando come parametro "configuration=configurazione prescelta(0,1,2) verbose=false,true"
     // esempio: /ns3 run homework -- configuration=1 verbose=false
     bool verbose=false;
-    int configuration=0;
+    int configuration=2;
     CommandLine cmd;
     cmd.AddValue("configuration","Scegli Configuration",configuration);
     cmd.AddValue("configuration","Scegli verbose",verbose);
@@ -172,7 +172,7 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
 
       // PCAP NODI RICHIESTI
-      csma1.EnablePcap("task1-0-3",csma1Devices.Get(1));
+      l0.EnablePcap("task1-0-3",l0Devices.Get(1));
       l3.EnablePcap("task1-0-5",l3Devices.Get(0));
       l3.EnablePcap("task1-0-6",l3Devices.Get(1));
       csma2.EnablePcap("task1-0-6 prova",csma2Devices.Get(0),true);
@@ -228,15 +228,89 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       csma1.EnableAscii("task1-1-2",csma1Devices.Get(2));
       l2.EnableAscii("task1-1-4",l2Devices.Get(0));
       csma1.EnableAscii("task1-1-0",csma1Devices.Get(0));
-      csma2.EnableAscii("task1-1-4",csma2Devices.Get(2));
+      csma2.EnableAscii("task1-1-8",csma2Devices.Get(2));
 
       // PCAP NODI RICHIESTI
-      csma1.EnablePcap("task1-1-3",csma1Devices.Get(1));
+      l0.EnablePcap("task1-1-3",l0Devices.Get(1));
       l3.EnablePcap("task1-1-5",l3Devices.Get(0));
       csma2.EnablePcap("task1-1-6",csma2Devices.Get(0),true);
     }
     else if  (configuration==2) {
-      exit(0);
+      //UdpEchoServer su n2
+      short unsigned port1=63;
+      UdpEchoServerHelper echoserver(port1);
+      ApplicationContainer serverApps = echoserver.Install(n0n1n2.Get(2));
+      
+      
+      //UdpEchoClient su n8
+      UdpEchoClientHelper echoclient(csma1Interfaces.GetAddress(2), port1);
+      echoclient.SetAttribute("MaxPackets", UintegerValue(5));
+      echoclient.SetAttribute("PacketSize", UintegerValue(2560));
+      echoclient.SetAttribute("Interval", TimeValue(Seconds(2.0)));
+      ApplicationContainer echoclientApp = echoclient.Install(n6n7n8.Get(2));
+      echoclientApp.Start(Seconds(3.0));
+      echoclientApp.Stop(Seconds(11.1));
+      int sommamatricole=1933744+1945149+1960602+1900000;
+      echoclient.SetFill(echoclientApp.Get(0),std::to_string(sommamatricole));
+
+      //TCP Sink su n2
+      short unsigned port2 = 2600;
+      Address tcpsinkLocalAddress(InetSocketAddress(Ipv4Address::GetAny(), port2));
+      PacketSinkHelper tcpsinkHelper("ns3::TcpSocketFactory", tcpsinkLocalAddress);
+      serverApps.Add(tcpsinkHelper.Install(n0n1n2.Get(2)));
+      
+      //TCP onoffclient su n4 
+      OnOffHelper tcpclientHelper("ns3::TcpSocketFactory",Address());
+      tcpclientHelper.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+      tcpclientHelper.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
+      AddressValue tcpclientAddress(InetSocketAddress(csma1Interfaces.GetAddress(2), port2));
+      tcpclientHelper.SetAttribute("Remote", tcpclientAddress);
+      tcpclientHelper.SetAttribute("PacketSize", UintegerValue(3000));
+      ApplicationContainer tcpclientApp;
+      tcpclientApp.Add(tcpclientHelper.Install(n4n5.Get(0)));
+      tcpclientApp.Start(Seconds(3.0));
+      tcpclientApp.Stop(Seconds(9.0));
+
+      //UDP Sink su n0
+      short unsigned port3 = 2500;
+      Address udpsinkLocalAddress(InetSocketAddress(Ipv4Address::GetAny(), port3));
+      PacketSinkHelper udpsinkHelper("ns3::UdpSocketFactory", udpsinkLocalAddress);
+      serverApps.Add(udpsinkHelper.Install(n0n1n2.Get(0)));
+
+      //UDP onoffclient su n7
+      OnOffHelper udpclientHelper("ns3::UdpSocketFactory",Address());
+      udpclientHelper.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
+      udpclientHelper.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0]"));
+      AddressValue udpclientAddress(InetSocketAddress(csma1Interfaces.GetAddress(0), port3));
+      udpclientHelper.SetAttribute("Remote", udpclientAddress);
+      udpclientHelper.SetAttribute("PacketSize", UintegerValue(3000));
+      ApplicationContainer udpclientApp;
+      udpclientApp.Add(udpclientHelper.Install(n6n7n8.Get(1)));
+      udpclientApp.Start(Seconds(5.0));
+      udpclientApp.Stop(Seconds(15.0));
+
+      //starting server apps
+      serverApps.Start(Seconds(0.0));
+      serverApps.Stop(Seconds(20.0));
+
+
+/* CATTURE DI PROVA
+      csma1.EnablePcap("task1-2-2",csma1Devices.Get(2));
+      csma1.EnablePcap("task1-2-0",csma1Devices.Get(0));
+*/
+      //ascii trace
+      //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
+      csma1.EnableAscii("task1-2-2",csma1Devices.Get(2));
+      l2.EnableAscii("task1-2-4",l2Devices.Get(0));
+      csma1.EnableAscii("task1-2-0",csma1Devices.Get(0));
+      csma2.EnableAscii("task1-2-8",csma2Devices.Get(2));
+      csma2.EnableAscii("task1-2-7",csma2Devices.Get(1));
+
+      // PCAP NODI RICHIESTI 
+      l0.EnablePcap("task1-2-3",l0Devices.Get(1));
+      l3.EnablePcap("task1-2-5",l3Devices.Get(0));
+      csma2.EnablePcap("task1-2-6",csma2Devices.Get(0),true);
+
     }
     else{
       perror ("configuration può assumere solo i valori interi tra 0 e 2");
