@@ -8,6 +8,8 @@
 using namespace ns3;
 
 
+
+
 NS_LOG_COMPONENT_DEFINE("Homework");
 
 int
@@ -19,13 +21,14 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
 */
     //Qui l'utente può scegliere la configurazione e verbose
-    // passando come parametro "configuration=configurazione prescelta(0,1,2) verbose=false,true"
-    // esempio: /ns3 run homework -- configuration=1 verbose=false
+    // esempio: ./ns3 run scratch/homework -- --configuration=0 --verbose=true
     bool verbose=false;
-    int configuration=2;
+    int configuration=0;
     CommandLine cmd;
-    cmd.AddValue("configuration","Scegli Configuration",configuration);
-    cmd.AddValue("configuration","Scegli verbose",verbose);
+    cmd.AddValue("configuration","int argument",configuration);
+    cmd.AddValue("verbose","bool argument",verbose);
+    cmd.Parse(argc,argv);
+    
     if (verbose) {
       LogComponentEnable ("PacketSink", LOG_LEVEL_ALL);
       LogComponentEnable ("TcpL4Protocol", LOG_LEVEL_ALL);
