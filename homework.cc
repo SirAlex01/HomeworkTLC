@@ -7,9 +7,6 @@
 
 using namespace ns3;
 
-
-
-
 NS_LOG_COMPONENT_DEFINE("Homework");
 
 int
@@ -248,13 +245,24 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       //UdpEchoClient su n8
       UdpEchoClientHelper echoclient(csma1Interfaces.GetAddress(2), port1);
       echoclient.SetAttribute("MaxPackets", UintegerValue(5));
-      echoclient.SetAttribute("PacketSize", UintegerValue(2560));
       echoclient.SetAttribute("Interval", TimeValue(Seconds(2.0)));
+      echoclient.SetAttribute("PacketSize", UintegerValue(2560));
       ApplicationContainer echoclientApp = echoclient.Install(n6n7n8.Get(2));
       echoclientApp.Start(Seconds(3.0));
       echoclientApp.Stop(Seconds(11.1));
+      //riempimento pacchetti:
       int sommamatricole=1933744+1945149+1960602+1943362;
-      echoclient.SetFill(echoclientApp.Get(0),std::to_string(sommamatricole));
+
+      //pacchetto riempito con sommamatricole seguita da spazi (prof non ha specificato come vada riempito il resto...)
+      int numcifre=0;
+      char fill[2559];
+      for (int i=0;i<2559;i++) fill[i]=' '; //padding
+      for (int i=sommamatricole;i>0;i/=10) numcifre++;
+      for (int i=0;i<numcifre;i++) {
+        fill[numcifre-i-1]=(sommamatricole%10)+'0';
+        sommamatricole/=10;
+      }
+      echoclient.SetFill(echoclientApp.Get(0),fill);
 
       //TCP Sink su n2
       short unsigned port2 = 2600;
@@ -319,22 +327,6 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       perror ("configuration può assumere solo i valori interi tra 0 e 2");
       exit(EXIT_FAILURE);
     }
-
-#if 0
-//
-// Users may find it convenient to initialize echo packets with actual data;
-// the below lines suggest how to do this
-//
-  client.SetFill (apps.Get (0), "Hello World");
-
-  client.SetFill (apps.Get (0), 0xa5, 1024);
-
-  uint8_t fill[] = { 0, 1, 2, 3, 4, 5, 6};
-  client.SetFill (apps.Get (0), fill, sizeof(fill), 1024);
-#endif
-
-
-
 
     //
     // Now, do the actual simulation.
