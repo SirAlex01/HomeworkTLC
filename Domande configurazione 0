@@ -1,0 +1,14 @@
+C01
+C02
+C03
+C04
+A1
+In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
+lineare condiviso(topologia a bus lineare).
+La rete nel suo complesso può anche essere considerata un albero con radice n3(topologia ad albero).
+I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete.
+A2
+A3
+A4
+
+
