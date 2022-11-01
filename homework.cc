@@ -253,7 +253,7 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
       ApplicationContainer echoclientApp = echoclient.Install(n6n7n8.Get(2));
       echoclientApp.Start(Seconds(3.0));
       echoclientApp.Stop(Seconds(11.1));
-      int sommamatricole=1933744+1945149+1960602+1900000;
+      int sommamatricole=1933744+1945149+1960602+1943362;
       echoclient.SetFill(echoclientApp.Get(0),std::to_string(sommamatricole));
 
       //TCP Sink su n2
