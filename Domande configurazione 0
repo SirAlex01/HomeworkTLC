@@ -11,5 +11,6 @@ I parametri che distinguono le varie configurazioni non alterano la topologia co
 A2
 A3
 A4
-
+In questa configurazione il bottleneck è i CSMA link della rete locale che contiene il nodo n2 che è il ricevente della comunicazione TCP tra n2 e n4 perchè il suo Data Rate è quello piu' basso nel collegamento considerato.
+Una possibile soluzione a ciò è aumentare la banda trasmissiva del CSMA link in oggetto oppure collegare il nodo n2 ad un altro nodo fuori dalla lan o direttamente al destinatario utilizzando un link con data rate maggiore.
 
