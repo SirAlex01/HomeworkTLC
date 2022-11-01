@@ -170,15 +170,15 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
       //ascii trace
       //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
-      csma1.EnableAscii("task1-0-2",csma1Devices.Get(2));
+      csma1.EnableAscii("task1-0-n2",csma1Devices.Get(2));
       l2.EnableAscii("task1-0-4",l2Devices.Get(0));
 
 
       // PCAP NODI RICHIESTI
-      l0.EnablePcap("task1-0-3",l0Devices.Get(1));
-      l3.EnablePcap("task1-0-5",l3Devices.Get(0));
-      l3.EnablePcap("task1-0-6",l3Devices.Get(1));
-      csma2.EnablePcap("task1-0-6 prova",csma2Devices.Get(0),true);
+      l0.EnablePcap("task1-0-n3",l0Devices.Get(1));
+      l3.EnablePcap("task1-0-n5",l3Devices.Get(0));
+      l3.EnablePcap("task1-0-n6",l3Devices.Get(1));
+      csma2.EnablePcap("task1-0-n6 prova",csma2Devices.Get(0),true);
 
       
     }
@@ -228,15 +228,15 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 
       //ascii trace
       //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
-      csma1.EnableAscii("task1-1-2",csma1Devices.Get(2));
-      l2.EnableAscii("task1-1-4",l2Devices.Get(0));
-      csma1.EnableAscii("task1-1-0",csma1Devices.Get(0));
-      csma2.EnableAscii("task1-1-8",csma2Devices.Get(2));
+      csma1.EnableAscii("task1-1-n2",csma1Devices.Get(2));
+      l2.EnableAscii("task1-1-n4",l2Devices.Get(0));
+      csma1.EnableAscii("task1-1-n0",csma1Devices.Get(0));
+      csma2.EnableAscii("task1-1-n8",csma2Devices.Get(2));
 
       // PCAP NODI RICHIESTI
-      l0.EnablePcap("task1-1-3",l0Devices.Get(1));
-      l3.EnablePcap("task1-1-5",l3Devices.Get(0));
-      csma2.EnablePcap("task1-1-6",csma2Devices.Get(0),true);
+      l0.EnablePcap("task1-1-n3",l0Devices.Get(1));
+      l3.EnablePcap("task1-1-n5",l3Devices.Get(0));
+      csma2.EnablePcap("task1-1-n6",csma2Devices.Get(0),true);
     }
     else if  (configuration==2) {
       //UdpEchoServer su n2
@@ -303,16 +303,16 @@ ATTENZIONE AD ATTIVARE I LOGGER, SONO MOLTO VERBOSI
 */
       //ascii trace
       //p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
-      csma1.EnableAscii("task1-2-2",csma1Devices.Get(2));
-      l2.EnableAscii("task1-2-4",l2Devices.Get(0));
-      csma1.EnableAscii("task1-2-0",csma1Devices.Get(0));
-      csma2.EnableAscii("task1-2-8",csma2Devices.Get(2));
-      csma2.EnableAscii("task1-2-7",csma2Devices.Get(1));
+      csma1.EnableAscii("task1-2-n2",csma1Devices.Get(2));
+      l2.EnableAscii("task1-2-n4",l2Devices.Get(0));
+      csma1.EnableAscii("task1-2-n0",csma1Devices.Get(0));
+      csma2.EnableAscii("task1-2-n8",csma2Devices.Get(2));
+      csma2.EnableAscii("task1-2-n7",csma2Devices.Get(1));
 
       // PCAP NODI RICHIESTI 
-      l0.EnablePcap("task1-2-3",l0Devices.Get(1));
-      l3.EnablePcap("task1-2-5",l3Devices.Get(0));
-      csma2.EnablePcap("task1-2-6",csma2Devices.Get(0),true);
+      l0.EnablePcap("task1-2-n3",l0Devices.Get(1));
+      l3.EnablePcap("task1-2-n5",l3Devices.Get(0));
+      csma2.EnablePcap("task1-2-n6",csma2Devices.Get(0),true);
 
     }
     else{
