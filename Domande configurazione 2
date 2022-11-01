@@ -5,7 +5,8 @@ A1
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
 lineare condiviso(topologia a bus lineare).
 La rete nel suo complesso può anche essere considerata un albero con radice n3(topologia ad albero).
-I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete.
+I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
+I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
 A2
 A3
 A4
