@@ -1,4 +1,13 @@
 C01
+##HO APPENA AVUTO UN'IDEA PER IL THP INSTANTANEO LA SCRIVO COME VIENE SOLO PER NON SCORDARLA POI CORREGGO EVENTUALI IMPRECISIONI
+Il throughput istantaneo dipende dall'istante di tempo considerato: come è possibile evincere tramite la cattura sfruttando Wireshark, i pacchetti vengono
+divisi in tre frammenti (segmenti?), i primi due dei quali trasportano 590 bits, l'ultimo solamente 482. Questo avviene però solo nei momenti in cui i 
+pacchetti vengono effettivamente spediti. In ogni altro istante di tempo il throughput istantaneo è pari a 0 bit/s.
+A tempo t=3.034439 (0.034439 sulla cattura wireshark) il client invia un pacchetto, il quale arriva interamente solo a tempo t=3.034557.
+Il throughput pertanto è pari a (590+590+482)/(3.034557-3.034439) bps=1.408 Mbps. Il goodput, cioè l'effettiva quantità di dati inviata senza considerare
+l'header dei pacchetti, poiché ogni pacchetto ha dimensione 1500 bits, è pari a 1.271 Mbps. Durante la three-ways handshake, cioè il periodo di scambio
+dei primi 3 pacchetti, il throughput è pari invece a (58*2+54)bits/0.10278s=16.54 kbps. ##(forse quest'ultima parte non è troppo calzante perché già sembra più
+un valore medio)
 C02
 C03
 C04
