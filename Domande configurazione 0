@@ -1,16 +1,12 @@
 C01
-##HO APPENA AVUTO UN'IDEA PER IL THP INSTANTANEO LA SCRIVO COME VIENE SOLO PER NON SCORDARLA POI CORREGGO EVENTUALI IMPRECISIONI
-Il throughput istantaneo dipende dall'istante di tempo considerato: come è possibile evincere tramite la cattura sfruttando Wireshark, i pacchetti vengono
-divisi in tre frammenti (segmenti?), i primi due dei quali trasportano 590 bits, l'ultimo solamente 482. Questo avviene però solo nei momenti in cui i 
-pacchetti vengono effettivamente spediti. In ogni altro istante di tempo il throughput istantaneo è pari a 0 bit/s.
-A tempo t=3.034439 (0.034439 sulla cattura wireshark) il client invia un pacchetto, il quale arriva interamente solo a tempo t=3.034557.
-Il throughput pertanto è pari a (590+590+482)/(3.034557-3.034439) bps=1.408 Mbps. Il goodput, cioè l'effettiva quantità di dati inviata senza considerare
-l'header dei pacchetti, poiché ogni pacchetto ha dimensione 1500 bits, è pari a 1.271 Mbps. Durante la three-ways handshake, cioè il periodo di scambio
-dei primi 3 pacchetti, il throughput è pari invece a (58*2+54)bits/0.10278s=16.54 kbps. ##(forse quest'ultima parte non è troppo calzante perché già sembra più
-un valore medio)
+Per poter parlare di throughput istantaneo, bisogna identificare gli istanti di tempo rilevanti in cui andare a calcolare il throughput. Poiché il client alterna periodi di attività, in cui invia pacchetti, a periodi di inattività, in questi ultimi il throughput istantaneo dev'essere ovviamente e banalmente pari a 0 bps. Il client, inoltre, invia pacchetti della dimensione di 1500 bytes, ma nell'attraversare la rete il pacchetto viene frammentato e trasformato in due pacchetti da 590 bytes, uno da 482 bytes. Inoltre, all'interno del collegamento LAN, il protocollo Point to Point (PPP) viene sostituito da quello Ethernet, più pesante, e le dimensioni diventano rispettivamente pari a 606 e 498 bytes. Per il calcolo del throughput, ci limitiamo a considerare la quantità di dati inviati dal client, cioè 590*2+482=1662 bytes, trasmessi, nel caso del primo pacchetto, in 3.035183-3.034279 s, con throughput conseguente di 14.708 Mbps.
 C02
+A tempo t=4s la quantità di dati trasmessa dal flusso TCP si può evincere dai Sequence Numbers dei pacchetti inviati: a t=3.99 s, il server invia al client la comunicazione di ricezione dell'ultimo pacchetto considerato, con ACK_no=61501.
+Ciò implica che fin'ora sono stati inviati 61500/1500=41 pacchetti. Noi, tuttavia, sappiamo che ad attraversare la rete sono tre pacchetti frammentati delle dimensioni sopracitate, quindi il throughput medio sarà (1662 bytes * 41)/(4-3)s = 68142 Bps = 545 kbps. Ciò è visibile anche dall'analisi degli I/O Graphs tracciati sulla cattura dei pacchetti inviati da n4 tramite Wireshark. Nel grafico che si riferisce a n2, invece, il throughput sembra più elevato, questo perché n1 modifica i pacchetti, come anticipato nella precedente risposta, aumentandone la dimensione. All'interno della lan, difatti, il throughput medio è pari a (606*2 + 498) * 41 bytes / 1 s = 70110 Bps = 561 kbps.
 C03
+A tempo t=7s l'ultimo ACK_no inviato dal server è pari a 249000, perciò sono stati inviati 166 pacchetti. Il throughput, calcolato come nella precedente risposta, risulta pari a 551 kbps. Il seguente risultato si discosta davvero di poco rispetto al precedente. Questo ci sembra un risultato evidente, poiché il livello di congestione della rete è minimo, se non nullo: il client invia un pacchetto ogni 0.024s, mentre il tempo di trasferimento per il singolo pacchetto si attesta intorno agli 0.0009 s. Ciò implica che la rete è vuota per la maggior parte del tempo e anche quando trasmette lo fa a un bitrate inferiore rispetto alla capacità del collo di bottiglia della rete, che è 25 Mbps, come si può evidenziare dalla risposta alla prima domanda.
 C04
+Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato. Perciò, una possibile stima del ritardo complessivo di ogni pacchetto inviato è pari a 499 pacchetti * 0.0009 s/pacchetto= 0.4491 s.
 A1
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
 lineare condiviso(topologia a bus lineare).
