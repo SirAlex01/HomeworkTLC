@@ -123,12 +123,12 @@ main(int argc, char* argv[])
     // Qui viene inserita la protocol stack su ogni nodo. È essenziale che ciò avvenga su tutti i nodi
     //!! error: no matching member function for call to 'Install' , mi dà questo errore quando compilo, perchè?! :(( -Andrea
     InternetStackHelper internet;
-    internet.Install(csma1);
-    internet.Install(csma2);
-    internet.Install(l0);
-    internet.Install(l1);
-    internet.Install(l2);
-    internet.Install(l3);
+    internet.Install(csma1Nodes);
+    internet.Install(csma2Nodes);
+    internet.Install(l0Nodes);
+    internet.Install(l1Nodes);
+    internet.Install(l2Nodes);
+    internet.Install(l3Nodes);
 
     // We've got the "hardware" in place.  Now we need to add IP addresses.
     // p2p interfaces
