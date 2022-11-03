@@ -59,31 +59,30 @@ main(int argc, char* argv[])
         LogComponentEnable ("OnOffApplication",   LOG_LEVEL_INFO);
     }
 
-    // uint32_t nCsma1 = 2;
-    // uint32_t nCsma2 = 2;
 
     NS_LOG_INFO("Create nodes");
 
-    NodeContainer csma1Nodes;
-    csma1Nodes.Create(3);
+    NodeContainer n0n1n2;
+    n0n1n2.Create(3);
 
-    NodeContainer csma2Nodes;
-    csma2Nodes.Create(3);
+    NodeContainer n1n3;
+    n1n3.Add(n0n1n2.Get(1));
+    n1n3.Create(1);
 
-    NodeContainer l0Nodes;
-    l0Nodes.Add(csma1Nodes.Get(1));
-    l0Nodes.Create(1);
+    NodeContainer n4n5;
+    n4n5.Create(2);
 
-    NodeContainer l1Nodes;
-    l1Nodes.Add(l0Nodes.Get(1));
-    l1Nodes.Add(csma2Nodes.Get(0));
+    NodeContainer n6n7n8;
+    n6n7n8.Create(3);
 
-    NodeContainer l2Nodes;
-    l2Nodes.Create(2);
+    NodeContainer n5n6;
+    n5n6.Add(n4n5.Get(1));
+    n5n6.Add(n6n7n8.Get(0));
 
-    NodeContainer l3Nodes;
-    l3Nodes.Add(l2Nodes.Get(1));
-    l3Nodes.Add(csma2Nodes.Get(0));
+    NodeContainer n3n6;
+    n3n6.Add(n1n3.Get(1));
+    n3n6.Add(n5n6.Get(1));
+
 
     NS_LOG_INFO("Create channels");
 
@@ -112,23 +111,22 @@ main(int argc, char* argv[])
     l3.SetChannelAttribute("Delay", StringValue("5us"));
 
     // I NetDeviceContainer servono ad installare i nodi sull'infrastuttura Hardware creata
-    NetDeviceContainer csma1Devices = csma1.Install(csma1Nodes);
-    NetDeviceContainer csma2Devices = csma2.Install(csma2Nodes);
+    NetDeviceContainer csma1Devices = csma1.Install(n0n1n2);
+    NetDeviceContainer csma2Devices = csma2.Install(n6n7n8);
 
-    NetDeviceContainer l0Devices = l0.Install(l0Nodes);
-    NetDeviceContainer l1Devices = l1.Install(l1Nodes);
-    NetDeviceContainer l2Devices = l2.Install(l2Nodes);
-    NetDeviceContainer l3Devices = l3.Install(l3Nodes);
+    NetDeviceContainer l0Devices=l0.Install(n1n3);
+    NetDeviceContainer l1Devices=l1.Install(n3n6);
+    NetDeviceContainer l2Devices=l2.Install(n4n5);
+    NetDeviceContainer l3Devices=l3.Install(n5n6);
+
 
     // Qui viene inserita la protocol stack su ogni nodo. È essenziale che ciò avvenga su tutti i nodi
     //!! error: no matching member function for call to 'Install' , mi dà questo errore quando compilo, perchè?! :(( -Andrea
     InternetStackHelper internet;
-    internet.Install(csma1Nodes);
-    internet.Install(csma2Nodes);
-    internet.Install(l0Nodes);
-    internet.Install(l1Nodes);
-    internet.Install(l2Nodes);
-    internet.Install(l3Nodes);
+    internet.Install(n0n1n2);
+    internet.Install(n1n3.Get(1));
+    internet.Install(n4n5);
+    internet.Install(n6n7n8);
 
     // We've got the "hardware" in place.  Now we need to add IP addresses.
     // p2p interfaces
@@ -150,12 +148,12 @@ main(int argc, char* argv[])
     address.SetBase("192.138.1.0", "/24");
     Ipv4InterfaceContainer csma1Interfaces = address.Assign(csma1Devices);
 
-    address.SetBase("192.138.1.0", "/24");
+    address.SetBase("192.138.2.0", "/24");
     Ipv4InterfaceContainer csma2Interfaces = address.Assign(csma2Devices);
 
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();   //?????
     
-    NS_LOG_INFO("Create Applications.");    //????
+    NS_LOG_INFO("Create Applications.");    
 
 
 
@@ -175,7 +173,7 @@ main(int argc, char* argv[])
         short unsigned port = 2400;
         Address sinkLocalAddress(InetSocketAddress(Ipv4Address::GetAny(), port));
         PacketSinkHelper sinkHelper("ns3::TcpSocketFactory", sinkLocalAddress);
-        ApplicationContainer sinkApp = sinkHelper.Install(csma1Nodes.Get(2));
+        ApplicationContainer sinkApp = sinkHelper.Install(n0n1n2.Get(2));
         sinkApp.Start(Seconds(0.0));
         sinkApp.Stop(Seconds(20.0));
 
@@ -191,7 +189,7 @@ main(int argc, char* argv[])
         clientHelper.SetAttribute("PacketSize", UintegerValue(1500));
 
         ApplicationContainer clientApp;
-        clientApp.Add(clientHelper.Install(l2Nodes.Get(0)));
+        clientApp.Add(clientHelper.Install(n4n5.Get(0)));
         //       Inizio invio dati:3s
         clientApp.Start(Seconds(3.0));
         //       Fine invio dati: 15s
@@ -219,19 +217,17 @@ main(int argc, char* argv[])
         Address sinkLocalAddress1(InetSocketAddress(Ipv4Address::GetAny(), port1));
         PacketSinkHelper sinkHelper1("ns3::TcpSocketFactory", sinkLocalAddress1);
         ApplicationContainer sinkApp;
-        sinkApp.Add(sinkHelper1.Install(csma1Nodes.Get(2)));
+        sinkApp.Add(sinkHelper1.Install(n0n1n2.Get(2)));
 
         //      n0, porta 7777
         short unsigned port2 = 7777;
         Address sinkLocalAddress2(InetSocketAddress(Ipv4Address::GetAny(), port2));
         PacketSinkHelper sinkHelper2("ns3::TcpSocketFactory", sinkLocalAddress2);
-        sinkApp.Add(sinkHelper2.Install(csma1Nodes.Get(0)));
+        sinkApp.Add(sinkHelper2.Install(n0n1n2.Get(0)));
         sinkApp.Start(Seconds(0.0));
         sinkApp.Stop(Seconds(20.0));
         
-        // o TCP OnOff Client n4 che manda dati a n1
-            //ATTENZIONE:PENSO CI SIA UN ERRORE NEL TESTO, DICE CHE QUESTO INVIA DATI A n1 MA SE IL SERVER
-            //È SU n0 NON HA SENSO. -sirAlex
+        // o TCP OnOff Client n4 che manda dati a n0
 
         OnOffHelper clientHelper1("ns3::TcpSocketFactory",Address());
         clientHelper1.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1]"));
@@ -243,7 +239,7 @@ main(int argc, char* argv[])
         clientHelper1.SetAttribute("PacketSize", UintegerValue(2500));
 
         ApplicationContainer clientApp1;
-        clientApp1.Add(clientHelper1.Install(l2Nodes.Get(0)));
+        clientApp1.Add(clientHelper1.Install(n4n5.Get(0)));
         //      Inizio invio dati: 5s
         clientApp1.Start(Seconds(5.0));
         //      Fine invio dati: 15s
@@ -260,7 +256,7 @@ main(int argc, char* argv[])
         clientHelper2.SetAttribute("PacketSize", UintegerValue(4500));
 
         ApplicationContainer clientApp2;
-        clientApp2.Add(clientHelper2.Install(csma2Nodes.Get(2)));
+        clientApp2.Add(clientHelper2.Install(n6n7n8.Get(2)));
         //      Inizio invio dati: 2s
         clientApp2.Start(Seconds(2.0));
         //      Fine invio dati: 9s
@@ -284,17 +280,17 @@ main(int argc, char* argv[])
         // o UDP Echo Server su n2, porta 63
         short unsigned port1 = 63;
         UdpEchoServerHelper echoserver(port1);
-        ApplicationContainer serverApps = echoserver.Install(csma1Nodes.Get(2));
+        ApplicationContainer serverApps = echoserver.Install(n0n1n2.Get(2));
 
         // o UDP Echo Client n8
         UdpEchoClientHelper echoclient(csma1Interfaces.GetAddress(2), port1);
         echoclient.SetAttribute("MaxPackets", UintegerValue(5));
-        //      Invia 5 paccheti a 3s, 4s, 7s, 9s
+        //      Invia 5 paccheti a 3s, 5s, 7s, 9s, 11
         echoclient.SetAttribute("Interval", TimeValue(Seconds(2.0)));
         //      Packet size: 2560 bytes
         echoclient.SetAttribute("PacketSize", UintegerValue(2560));
 
-        ApplicationContainer echoclientApp = echoclient.Install(csma2Nodes.Get(2));
+        ApplicationContainer echoclientApp = echoclient.Install(n6n7n8.Get(2));
         echoclientApp.Start(Seconds(3.0));
         echoclientApp.Stop(Seconds(11.1));
         
@@ -316,14 +312,14 @@ main(int argc, char* argv[])
         short unsigned port2 = 2600;
         Address tcpsinkLocalAddress(InetSocketAddress(Ipv4Address::GetAny(), port2));
         PacketSinkHelper tcpsinkHelper("ns3::TcpSocketFactory", tcpsinkLocalAddress);
-        serverApps.Add(tcpsinkHelper.Install(csma1Nodes.Get(2)));
+        serverApps.Add(tcpsinkHelper.Install(n0n1n2.Get(2)));
       
         // o UDP Sink su
         //      n0, porta 2500
         short unsigned port3 = 2500;
         Address udpsinkLocalAddress(InetSocketAddress(Ipv4Address::GetAny(), port3));
         PacketSinkHelper udpsinkHelper("ns3::UdpSocketFactory", udpsinkLocalAddress);
-        serverApps.Add(udpsinkHelper.Install(csma1Nodes.Get(0)));
+        serverApps.Add(udpsinkHelper.Install(n0n1n2.Get(0)));
 
         // o TCP OnOff Client n4
         OnOffHelper tcpclientHelper("ns3::TcpSocketFactory",Address());
@@ -336,7 +332,7 @@ main(int argc, char* argv[])
         tcpclientHelper.SetAttribute("PacketSize", UintegerValue(3000));
 
         ApplicationContainer tcpclientApp;
-        tcpclientApp.Add(tcpclientHelper.Install(l2Nodes.Get(0)));
+        tcpclientApp.Add(tcpclientHelper.Install(n4n5.Get(0)));
         //      Inizio invio dati:3s
         tcpclientApp.Start(Seconds(3.0));
         //      Fine invio dati: 9s
@@ -354,7 +350,7 @@ main(int argc, char* argv[])
         udpclientHelper.SetAttribute("PacketSize", UintegerValue(3000));
 
         ApplicationContainer udpclientApp;
-        udpclientApp.Add(udpclientHelper.Install(csma2Nodes.Get(1)));
+        udpclientApp.Add(udpclientHelper.Install(n6n7n8.Get(1)));
         //      Inizio invio dati: 5s
         udpclientApp.Start(Seconds(5.0));
         //      Fine invio dati: 15s
