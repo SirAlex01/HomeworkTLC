@@ -14,6 +14,7 @@ La rete nel suo complesso può anche essere considerata un albero con radice n3(
 I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
 I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
 A2
+Nella seguente configurazione i pacchetti TCP partono dal nodo n4, dov'è situata la OnOff Application e vengono inviati al nodo n5 tramite il collegamento Point to Point l2. Poi vengono inviati a n6 attraverso il collegamento l3. La connessione LAN tra n6, n7 e n8 non è coinvolta nella comunicazione, infatti la cattura effettuata su ciascuno dei nodi di questo specifico collegamento (non quindi sulle connessioni Point to Point di n6) risulta vuota. I pacchetti vengono poi spediti da n6 a n3 attraverso il collegamento Point to Point l1 e ancora a n1 attraverso il collegamento Point to Point l0. Qui, i pacchetti vengono elaborati, come è possibile vedere dalle catture ASCII effettuate sul nodo n1, prima di essere spediti con un Header differente, contenente il protocollo Ethernet in luogo di quello Point to Point, a n2 mediante il CSMA Link che li interconnette. In n2, i pacchetti vengono raccolti dal Sink e terminano il loro "viaggio".
 A3
 A4
 In questa configurazione il bottleneck è i CSMA link della rete locale che contiene il nodo n2 che è il ricevente della comunicazione TCP tra n2 e n4 perchè il suo Data Rate è quello piu' basso nel collegamento considerato.
