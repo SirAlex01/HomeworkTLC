@@ -1,23 +1,30 @@
-C01
+C01) Calcolare il throughput istantaneo del flusso TCP.
 Per il throughput istantaneo, bisogna identificare gli istanti di tempo rilevanti in cui calcolare il throughput: il client alterna periodi di attività a periodi di inattività, dove il throughput istantaneo è ovviamente 0 bps. Il client invia pacchetti della dimensione di 1500 B, ma nell'attraversare la rete il pacchetto viene frammentato in due pacchetti da 590 B, uno da 482 B. Inoltre, nel collegamento LAN il Point to Point Protocol viene sostituito da quello Ethernet e le dimensioni diventano rispettivamente pari a 606 e 498 B. Per il calcolo del throughput consideriamo la quantità di dati inviati dal client, cioè 590*2+482=1662 B, trasmessi, nel caso del primo pacchetto, in 3.035183-3.034279 s, con throughput istantaneo di 14.708 Mbps in t=3.035s. Il throughput è influenzato anche dalla congestione della rete e varia. Ad esempio nell'invio del pacchetto 417 vale 1662 / (12.995274−12.994297) Bps = 13.609 Mbps in t=12.995s.
-C02
+
+C02) Calcolare il throughput medio del flusso TCP a tempo t=4.0s.
 A tempo t=4s la quantità di dati trasmessa dal flusso TCP si può evincere dai Sequence Numbers dei pacchetti inviati: a t=3.99 s, il server invia al client la comunicazione di ricezione dell'ultimo pacchetto considerato, con ACK_no=61501.
 Ciò implica che fin'ora sono stati inviati 61500/1500=41 pacchetti. Noi, tuttavia, sappiamo che ad attraversare la rete sono tre pacchetti frammentati delle dimensioni sopracitate, quindi il throughput medio sarà (1662 bytes * 41)/(4-3)s = 68142 Bps = 545 kbps. Ciò è visibile anche dall'analisi degli I/O Graphs tracciati sulla cattura dei pacchetti inviati da n4 tramite Wireshark. Nel grafico che si riferisce a n2, invece, il throughput sembra più elevato, questo perché n1 modifica i pacchetti, come anticipato nella precedente risposta, aumentandone la dimensione. All'interno della lan, difatti, il throughput medio è pari a (606*2 + 498) * 41 bytes / 1 s = 70110 Bps = 561 kbps.
-C03
+
+C03) Calcolare il throughput medio del flusso TCP a tempo t=7.0s. Commentare eventuali cambiamenti rispetto a C02.
 A tempo t=7s l'ultimo ACK_no inviato dal server è pari a 249000, perciò sono stati inviati 166 pacchetti. Il throughput, calcolato come nella precedente risposta, risulta pari a 551 kbps. Il seguente risultato si discosta davvero di poco rispetto al precedente. Questo ci sembra un risultato evidente, poiché il livello di congestione della rete è minimo, se non nullo: il client invia un pacchetto ogni 0.024s, mentre il tempo di trasferimento per il singolo pacchetto si attesta intorno agli 0.0009 s. Ciò implica che la rete è vuota per la maggior parte del tempo e anche quando trasmette lo fa a un bitrate inferiore rispetto alla capacità del collo di bottiglia della rete, che è 25 Mbps, come si può evidenziare dalla risposta alla prima domanda.
-C04
+
+C04) Calcolare il ritardo di trasferimento complessivo di tutti i pacchetti inviati.
 Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato. Perciò, una possibile stima del ritardo complessivo di ogni pacchetto inviato è pari a 499 pacchetti * 0.0009 s/pacchetto= 0.4491 s. La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai logger e si può ricavare utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto. 
-A1
+
+A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
 lineare condiviso(topologia a bus lineare).
 La rete nel suo complesso può anche essere considerata un albero con radice n3(topologia ad albero).
 I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
 I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
-A2
+
+A2) Ricostruzione del percorso dei pacchetti attraverso la rete di tutti i flussi simulati usando wireshark evidenziando i filtri utilizzati per isolare i singoli flussi dello strato di trasporto tra le tracce.
 Nella seguente configurazione i pacchetti TCP partono dal nodo n4, dov'è situata la OnOff Application e vengono inviati al nodo n5 tramite il collegamento Point to Point l2. Poi vengono inviati a n6 attraverso il collegamento l3. La connessione LAN tra n6, n7 e n8 non è coinvolta nella comunicazione, infatti la cattura effettuata su ciascuno dei nodi di questo specifico collegamento (non quindi sulle connessioni Point to Point di n6) risulta vuota. I pacchetti vengono poi spediti da n6 a n3 attraverso il collegamento Point to Point l1 e ancora a n1 attraverso il collegamento Point to Point l0. Qui, i pacchetti vengono elaborati, come è possibile vedere dalle catture ASCII effettuate sul nodo n1, prima di essere spediti con un Header differente, contenente il protocollo Ethernet in luogo di quello Point to Point, a n2 mediante il CSMA Link che li interconnette. In n2, i pacchetti vengono raccolti dal Sink e terminano il loro "viaggio".
 Filtro usato: "tcp.srcport!=2400"
-A3
-A4
+
+A3) Calcolo e grafico di round trip time (RTT) e commento.
+
+A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
 In questa configurazione il bottleneck è i CSMA link della rete locale che contiene il nodo n2 che è il ricevente della comunicazione TCP tra n2 e n4 perchè il suo Data Rate è quello piu' basso nel collegamento considerato.
 Una possibile soluzione a ciò è aumentare la banda trasmissiva del CSMA link in oggetto oppure collegare il nodo n2 ad un altro nodo fuori dalla lan o direttamente al destinatario utilizzando un link con data rate maggiore.
 

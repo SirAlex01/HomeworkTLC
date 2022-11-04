@@ -1,13 +1,17 @@
-C21
-C22
-C23
-A1
+C21) Calcolare il throughput medio del flusso TCP a tempo t=5s.
+
+C22) Calcolare il throughput medio del flusso TCP a tempo t=7s. Commentare eventuali cambiamenti rispetto a C21.
+
+C23) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
+
+A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
 lineare condiviso(topologia a bus lineare).
 La rete nel suo complesso può anche essere considerata un albero con radice n3(topologia ad albero).
 I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
 I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
-A2
+
+A2) Ricostruzione del percorso dei pacchetti attraverso la rete di tutti i flussi simulati usando wireshark evidenziando i filtri utilizzati per isolare i singoli flussi dello strato di trasporto tra le tracce.
 Nella seguente configurazione i pacchetti UDP indirizzati all'Echo Server e quelli in risposta dal Server al Client seguono un percorso affine al caso precedente. Il pacchetto, dopo essere partito da n8 ed aver attraversato n7,n6,n3 ed n1, viene inviato attraverso il CSMA link all'Echo Server in n2, che invia la risposta,la quale seguirà il percorso opposto (n2,n1,n3,n6,n7 e n8 saranno attraversati con i rispettivi link che li collegano). Il percorso effettuato dai pacchetti TCP che il nodo n4 con OnOff Application invia al Sink del nodo n2 è esattamente lo stesso descritto in A2 per la configurazione 0. I pacchetti UDP, che l'OnOff Application in n7 invia, attraversano il nodo n6 tramite il link CSMA, poi il nodo n3, attraverso il link l1, infine n1 attraverso l0. Infine, il CSMA link inoltra i pacchetti al nodo n0.
 filtri per isolare i flussi:
 "udp.srcport!=2500 and udp.port==2500" UDP OnOffApp
@@ -15,5 +19,7 @@ filtri per isolare i flussi:
 "udp.srcport!=63 and udp.port==63" Echo Client -> Echo Server
 "udp.srcport==63" Echo Server -> Echo Client 
 "udp.port==63" Echo Server <-> Echo Client 
-A3
-A4
+
+A3) Calcolo e grafico di round trip time (RTT) e commento.
+
+A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
