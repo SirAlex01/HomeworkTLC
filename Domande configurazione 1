@@ -1,4 +1,7 @@
 C11
+Dalla cattura di un qualsiasi nodo attraversati da entrambi i flussi, isolati con i filtri, è possibile vedere che il flusso da n4 a n0 trasmette complessivamente 622500 B (ultimo ACK_no ricevuto), quindi 249 pacchetti di 2500 B, ciascuno frammentato in 4 pacchetti di 590 B e uno di 410 B. Il throughput medio di questo flusso risulta pari a (590*4+410) * 249 / (15-5) = 68973 Bps = 552 kbps. Il flusso da n8 a n2 invia complessivamente 432000 B (anche qui ultimo ACK_no ricevuto dal suo server), cioè 96 pacchetti di 4500 B, frammentati stavolta in 8 pacchetti di 590 B e uno di 266 B. Il throughput medio di questo flusso quindi risulta pari a (590*8+266) * 96 / (9-2) = 68379 Bps = 547 kbps.
+Il throughput medio complessivo dei due flussi è quindi pari a:
+[(590*8+266)*96+(590*4+410)*249]/(15-2) = 89876 Bps = 719 kbps
 C12
 C13
 C14
