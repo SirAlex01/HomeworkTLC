@@ -8,5 +8,12 @@ La rete nel suo complesso può anche essere considerata un albero con radice n3(
 I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
 I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
 A2
+Nella seguente configurazione i pacchetti UDP indirizzati all'Echo Server e quelli in risposta dal Server al Client seguono un percorso affine al caso precedente. Il pacchetto, dopo essere partito da n8 ed aver attraversato n7,n6,n3 ed n1, viene inviato attraverso il CSMA link all'Echo Server in n2, che invia la risposta,la quale seguirà il percorso opposto (n2,n1,n3,n6,n7 e n8 saranno attraversati con i rispettivi link che li collegano). Il percorso effettuato dai pacchetti TCP che il nodo n4 con OnOff Application invia al Sink del nodo n2 è esattamente lo stesso descritto in A2 per la configurazione 0. I pacchetti UDP, che l'OnOff Application in n7 invia, attraversano il nodo n6 tramite il link CSMA, poi il nodo n3, attraverso il link l1, infine n1 attraverso l0. Infine, il CSMA link inoltra i pacchetti al nodo n0.
+filtri per isolare i flussi:
+"udp.srcport!=2500 and udp.port==2500" UDP OnOffApp
+"tcp.srcport!=2600 and tcp.port==2600" TCP OnOffApp
+"udp.srcport!=63 and udp.port==63" Echo Client -> Echo Server
+"udp.srcport==63" Echo Server -> Echo Client 
+"udp.port==63" Echo Server <-> Echo Client 
 A3
 A4
