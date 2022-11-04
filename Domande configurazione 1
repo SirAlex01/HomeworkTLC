@@ -9,6 +9,10 @@ La rete nel suo complesso può anche essere considerata un albero con radice n3(
 I collegamenti tra endpoints come quello tra n4 e n5 sono del tipo punto a punto,analogamente sono collegamenti punto a punto anche l0,l1 e l3.
 I parametri che distinguono le varie configurazioni non alterano la topologia complessiva della rete e delle sue sottoreti.
 A2
+In questa configurazione, il primo flusso TCP segue lo stesso percorso già descritto nella precedente configurazione, al quale però si va a sovrapporre un ulteriore flusso, che parte dal nodo n8 e attraversa tutto il CSMA link attraversando i nodi n7 e n6. In ques'ultimo nodo i due flussi attraversano la stessa sezione della rete, attraversando i nodi n3, tramite il link l1, e n1, tramite il link l0. Infine il flusso partito da n4 termina la propria percorrenza attraversando il CSMA link e venendo mandato al Sink in n2, mentre il flusso partito da n8 termina la percorrenza nel Sink in n0. Per isolare i due flussi tramite Wireshark occorre utilizzare i seguenti filtri:
+"(tcp.srcport!=7777 &&  tcp.port==7777)" permette di isolare il flusso di pacchetti da n8 a n0
+"(tcp.srcport!=2400 &&  tcp.port==2400)" permette di isolare il flusso di pacchetti da n4 a n2
+"(tcp.srcport!=7777 && tcp.srcport!=2400)" permette di visualizzare solo i due flussi
 A3
 A4
 In questa configurazione il bottleneck è il CSMA link della rete locale che contengono il nodo n2 e il nodo n0,che sono i riceventi della comunicazione TCP tra n2 e n8 e tra n0 e n4 perchè il suo Data Rate è quello piu' basso nei collegamenti considerati. Inoltre tale link è anche condiviso dalle due comunicazioni.
