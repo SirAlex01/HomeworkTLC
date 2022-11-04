@@ -1,11 +1,22 @@
 C11) Calcolare il throughput medio dei flussi TCP.
-Dalla cattura di un qualsiasi nodo attraversati da entrambi i flussi, isolati con i filtri, è possibile vedere che il flusso da n4 a n0 trasmette complessivamente 622500 B (ultimo ACK_no ricevuto), quindi 249 pacchetti di 2500 B, ciascuno frammentato in 4 pacchetti di 590 B e uno di 410 B. Il throughput medio di questo flusso risulta pari a (590*4+410) * 249 / (15-5) = 68973 Bps = 552 kbps. Il flusso da n8 a n2 invia complessivamente 432000 B (anche qui ultimo ACK_no ricevuto dal suo server), cioè 96 pacchetti di 4500 B, frammentati stavolta in 8 pacchetti di 590 B e uno di 266 B. Il throughput medio di questo flusso quindi risulta pari a (590*8+266) * 96 / (9-2) = 68379 Bps = 547 kbps.
+Dalla cattura di un qualsiasi nodo attraversati da entrambi i flussi, isolati con i filtri, è possibile vedere che il flusso da n4 a n0 trasmette complessivamente 622500 B (ultimo ACK_no ricevuto), quindi 249 pacchetti di 2500 B, ciascuno frammentato in 4 pacchetti di 590 B e uno di 410 B. 
+Il throughput medio di questo flusso risulta pari a (590 * 4 + 410) * 249 / (15-5) = 68973 Bps = 552 kbps. Il flusso da n8 a n2 invia complessivamente 432000 B (anche qui ultimo ACK_no ricevuto dal suo server), cioè 96 pacchetti di 4500 B, frammentati stavolta in 8 pacchetti di 590 B e uno di 266 B. Il throughput medio di questo flusso quindi risulta pari a (590 * 8 + 266) * 96 / (9-2) = 68379 Bps = 547 kbps.
 Il throughput medio complessivo dei due flussi è quindi pari a:
 [(590*8+266)*96+(590*4+410)*249]/(15-2) = 89876 Bps = 719 kbps
 
 C12) Calcolare il throughput medio del flusso TCP n8 verso n2 a tempo t=6s.
+-Bozza di Andrea: 
+dati da task1-1-n8-8-0.tr (ha senso prenderli da qui?)
+A tempo t = 5.97984 -> ACK_no=247501 (presumo sia totale dati inviati fino ad ora)
+quindi Throughput medio = 247501 B / (5.97984 - 2)s = 62188 Bps
 
 C13) Calcolare il throughput medio del flusso TCP n8 verso n2 a tempo t=8s. Commentare eventuali cambiamenti rispetto a C12.
+-Bozza di Andrea: 
+dati da task1-1-n8-8-0.tr (ha senso prenderli da qui?)
+A tempo t = 7.99591 -> ACK_no=373501 (presumo sia totale dati inviati fino ad ora)
+quindi Throughput medio = 373501 B / (7.99591 - 2)s = 62292 Bps (è aumentato ma non so perchè)
+Commento: (???)
+
 
 C14) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 
