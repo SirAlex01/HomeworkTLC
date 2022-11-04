@@ -121,7 +121,6 @@ main(int argc, char* argv[])
 
 
     // Qui viene inserita la protocol stack su ogni nodo. È essenziale che ciò avvenga su tutti i nodi
-    //!! error: no matching member function for call to 'Install' , mi dà questo errore quando compilo, perchè?! :(( -Andrea
     InternetStackHelper internet;
     internet.Install(n0n1n2);
     internet.Install(n1n3.Get(1));
