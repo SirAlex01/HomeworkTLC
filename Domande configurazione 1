@@ -5,18 +5,13 @@ Il throughput medio complessivo dei due flussi è quindi pari a:
 [(590*8+266)*96+(590*4+410)*249]/(15-2) = 89876 Bps = 719 kbps
 
 C12) Calcolare il throughput medio del flusso TCP n8 verso n2 a tempo t=6s.
--Bozza di Andrea: 
-dati da task1-1-n8-8-0.tr (ha senso prenderli da qui?)
-A tempo t = 5.97984 -> ACK_no=247501 (presumo sia totale dati inviati fino ad ora)
-quindi Throughput medio = 247501 B / (5.97984 - 2)s = 62188 Bps
+A tempo t = 6s la quantità di bytes trasmessa sul flusso TCP si ricava dai Sequence Numbers e, in particolare, si ricava dall'ACK_no=247501. Quindi finora sono stati inviati e ricevuti 247500/4500=55 pacchetti.
+Tali pacchetti, attraversando la rete, vengono però frammentati in 8 pacchetti da 590B e uno da 266B, comportando un TH medio pari a ((590*8 + 266) bytes * 55) / (6-2) s = 68557 Bps = 548 kbps. Tale risultato è confermato dall'analisi dell'I/O Graph di Wireshark relativi alla cattura dei pacchetti inviati da n8.
 
 C13) Calcolare il throughput medio del flusso TCP n8 verso n2 a tempo t=8s. Commentare eventuali cambiamenti rispetto a C12.
--Bozza di Andrea: 
-dati da task1-1-n8-8-0.tr (ha senso prenderli da qui?)
-A tempo t = 7.99591 -> ACK_no=373501 (presumo sia totale dati inviati fino ad ora)
-quindi Throughput medio = 373501 B / (7.99591 - 2)s = 62292 Bps (è aumentato ma non so perchè)
-Commento: (???)
-
+A tempo t = 8s il server invia ACK_no=373501 relativo all'ultimo pacchetto ricevuto, quindi in totale i pacchetti inviati da n8 finora sono 373500/4500=83.
+Quindi, con la stessa procedura utilizzata in C12, il TH medio risulta pari a ((590*8 + 266) bytes * 83) / (8-2) s = 68973 Bps = 552 kbps.
+Come già evidenziato in precedenza in C03, tale risultato ci sembra coerente con il fatto che il livello di congestione della rete è minimo, se non proprio nullo.
 
 C14) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 Scelgo come nodo n3 in riferimento al quale effettuare la mia analisi.
