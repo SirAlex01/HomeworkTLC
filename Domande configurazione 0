@@ -34,6 +34,10 @@ In n2, i pacchetti vengono raccolti dal Sink e terminano il loro "viaggio".
 Filtro usato: "tcp.srcport!=2400"
 
 A3) Calcolo e grafico di round trip time (RTT) e commento.
+Per calcolare RTT di un pacchetto generico, prendiamo la cattura del nodo del client e calcoliamo la differenza tra tempo di arrivo dell'ultimo ack e tempo di partenza del primo pacchetto (definizione di RTT), che è in linea con le aspettative e il grafico. 
+Calcolo per il primo pacchetto: RTT = 3,035258 - 3,034279 = 0,000979 s.
+Come si può vedere dal grafico, alcune volte l'RTT assume valori sensibilmente più alti di quello calcolato, questo perché a volte l'invio del messaggio di ACK riferito all'ultimo frammento di un pacchetto viene inviato solo dopo che il client ha cominciato a inviare il pacchetto successivo, quindi con un ritardo sensibilmente più alto. 
+Calcolo per il secondo pacchetto: RTT = 3,082814 - 3,058279 = 0,024535 s.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
 In questa configurazione il bottleneck è i CSMA link della rete locale che contiene il nodo n2 che è il ricevente della comunicazione TCP tra n2 e n4 perchè il suo Data Rate è quello piu' basso nel collegamento considerato.
