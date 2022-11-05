@@ -41,7 +41,7 @@ main(int argc, char* argv[])
 
     //Qui l'utente può scegliere la configurazione e verbose
     //esempio: ./ns3 run "scratch/homework --configuration=0 --verbose=true"
-    bool verbose=true;
+    bool verbose=false;
 
     int configuration=0;
 

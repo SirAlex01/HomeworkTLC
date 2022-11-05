@@ -3,20 +3,14 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 df1 = pd.read_csv("10.csv")
-df1=df1.drop(labels=[0,1,1247,1248],axis=0)
-df2 = pd.read_csv("192.csv")
-df2=df2.drop(labels=[0,1,866,867],axis=0)
 size1=df1["Length"].tolist()
-size2=df2["Length"].tolist()
 avg_size=0
-joined_size=size1+size2
+joined_size=size1
 for size in joined_size:
     avg_size=avg_size+size
 avg_size=avg_size/len(joined_size)
 time1=df1["Time"].tolist()
-time2=df2["Time"].tolist()
-time=time1+time2
-time.sort()
+time=time1
 x=[]
 y=[]
 time_0=time[0]
@@ -46,3 +40,4 @@ for i in range(1,len(joined_size)):
 #print(y)
 plt.plot(x,y)
 plt.show()
+
