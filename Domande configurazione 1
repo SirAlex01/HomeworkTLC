@@ -39,5 +39,5 @@ In questa configurazione, il primo flusso TCP segue lo stesso percorso già desc
 A3) Calcolo e grafico di round trip time (RTT) e commento.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
-In questa configurazione il bottleneck è il CSMA link della rete locale che contengono il nodo n2 e il nodo n0,che sono i riceventi della comunicazione TCP tra n2 e n8 e tra n0 e n4 perchè il suo Data Rate è quello piu' basso nei collegamenti considerati. Inoltre tale link è anche condiviso dalle due comunicazioni.
+In questa configurazione il bottleneck è il CSMA link della rete locale che contiene il nodo n2 e il nodo n0,che sono i riceventi della comunicazione TCP tra n2 e n8 e tra n0 e n4 perchè il suo Data Rate è quello piu' basso nei collegamenti considerati. Inoltre tale link è anche condiviso dalle due comunicazioni.
 Una possibile soluzione a ciò è aumentare la banda trasmissiva del CSMA link in oggetto oppure collegare il nodo n2 o il nodo n0 ad un altro nodo fuori dalla lan o direttamente al destinatario utilizzando un link con sufficiente data rate.

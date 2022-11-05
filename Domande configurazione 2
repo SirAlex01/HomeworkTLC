@@ -25,3 +25,5 @@ filtri per isolare i flussi:
 A3) Calcolo e grafico di round trip time (RTT) e commento.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
+Il bottleneck è il CSMA link della lan contenente n2 e n0. Infatti tutte le comunicazioni vengono trasmesse o ricevute passando anche attraverso questa lan. Quindi una contromisura può essere aumentare la banda del CSMA link in oggetto oppure collegare i server ai clients corrispondenti o comunque collegarli al di fuori della lan.
+E' importante sottolineare che,una volta risolto tale bottleneck, andrebbe considerato anche aumentare la banda del CSMA link della lan contenente il nodo n8 oppure collegare al di fuori della lan tale nodo,che potrebbe a sua volta rallentare alcuni flussi della configurazione considerata.
