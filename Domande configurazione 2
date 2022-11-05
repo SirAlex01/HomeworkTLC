@@ -1,9 +1,11 @@
 C21) Calcolare il throughput medio del flusso TCP a tempo t=5s.
-A tempo t=5s la quantità di dati trasmessi dal flusso TCP è ricavabile dai Sequence Numbers dei pacchetti inviati ed è pari a 123000B (ultimo SEQ_no + dim. payload), quindi dopo 5s sono stati inviati 123000/3000=41 pacchetti. Sapendo però che la frammentazione durante l'attraversamento della rete produce 5 pacchetti da 590B e un pacchetto da 374B, avremo un TH medio di (3324 bytes * 41) / (5-3) s = 66142 Bps = 545 kbs.
+A tempo t=5s la quantità di dati trasmessi dal flusso TCP è ricavabile dai Sequence Numbers dei pacchetti inviati ed è pari a 123000B (ultimo SEQ_no + dim. payload), quindi dopo 5s sono stati inviati 123000/3000=41 pacchetti. Sapendo però che la frammentazione durante l'attraversamento della rete produce 5 pacchetti da 590B e un pacchetto da 374B, avremo un TH medio di (3324 bytes * 41) / (5-3) s = 66142 Bps = 545 kbps.
 Tale valore si discosta di poco da quello riscontrabile dall'analisi dell'I/O Graph prodotto da Wireshark dalla cattura dei pacchetti inviati da n4.
 
 C22) Calcolare il throughput medio del flusso TCP a tempo t=7s. Commentare eventuali cambiamenti rispetto a C21.
-(?) Esce 545kbps ma si discosta di molto dall'I/O Graph (1.102Mbps) ed inoltre è piu' del doppio rispetto a C21
+Utilizzando il medesimo procedimento e le medesime considerazioni di C21, a t=7s rileviamo ACK_no=248681 e, aggiungendo la dimensione dell'ultimo pacchetto inviato dal client (il cui ACK salta e viene unito a quello del pacchetto successivo), otteniamo (248680+320)/3000 = 83 pacchetti inviati da n4 finora.
+Il relativo TH medio, considerando i pacchetti frammentati, è quindi pari a (3324 bytes * 83) / (7-3) s = 68973 Bps = 552kbps.
+Le considerazioni relative al seguente risultato coincidono con quelle relative alle precedenti configurazioni 0 ed 1. Infatti la rete, non essendo significativamente congestionata, non rischia mai di raggiungere o superare la capacità di bottleneck.
 
 C23) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 
