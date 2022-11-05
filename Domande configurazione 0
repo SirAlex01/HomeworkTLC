@@ -16,8 +16,14 @@ A tempo t=7s l'ultimo ACK_no inviato dal server è pari a 249000, perciò sono s
 Il seguente risultato si discosta davvero di poco rispetto al precedente. Questo ci sembra un risultato evidente, poiché il livello di congestione della rete è minimo, se non nullo: il client invia un pacchetto ogni 0.024s, mentre il tempo di trasferimento per il singolo pacchetto si attesta intorno agli 0.0009 s. Ciò implica che la rete è vuota per la maggior parte del tempo e anche quando trasmette lo fa a un bitrate inferiore rispetto alla capacità del collo di bottiglia della rete, che è 25 Mbps, come si può evidenziare dalla risposta alla prima domanda.
 
 C04) Calcolare il ritardo di trasferimento complessivo di tutti i pacchetti inviati.
-Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. 
+Risposta Alessio:Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. 
 Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato. Perciò, una possibile stima del ritardo complessivo di ogni pacchetto inviato è pari a 499 pacchetti * 0.0009 s/pacchetto = 0.4491 s. La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai logger e si può ricavare utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto. 
+
+Risposta Davide:
+Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato.
+La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai logger e si può ricavare analiticamente utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto.
+Infine si nota dai logger e da Wireshark che il primo pacchetto viene inviato a +3.03s mentre l'ultimo viene ricevuto a   +14.98 s. Quindi la differenza tra l'invio del primo pacchetto e la ricezione dell'ultimo è 11,95 s.
+
 
 A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus lineare condiviso (topologia a bus lineare).
