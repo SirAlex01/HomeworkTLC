@@ -22,7 +22,7 @@ Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente d
 Risposta Davide:
 Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato.
 La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai logger e si può ricavare analiticamente utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto.
-Infine si nota dai logger e da Wireshark che il primo pacchetto viene inviato a +3.03s mentre l'ultimo viene ricevuto a   +14.98 s. Quindi la differenza tra l'invio del primo pacchetto e la ricezione dell'ultimo è 11,95 s.
+Infine si nota dall'analisi dei logger secondo cui il primo pacchetto viene inviato a +3.03s mentre l'ultimo viene ricevuto a +14.98 s. Quindi la differenza tra l'invio del primo pacchetto e la ricezione dell'ultimo è 11,95 s.
 
 
 A1) Individuare le varie topologie note che compongono la rete.
