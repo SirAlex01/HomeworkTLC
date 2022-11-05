@@ -19,6 +19,14 @@ Commento: (???)
 
 
 C14) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
+Scelgo come nodo n3 in riferimento al quale effettuare la mia analisi.
+Il nostro calcolo prende in esame i flussi provenienti da n8 a n2 e da n4 a n0. 
+Entrambi i flussi utilizzano il collegamento che parte da n6 e arriva a n3.
+Calcolo l'intensità di traffico=La/R con L dimensione media dei pacchetti,a tasso di arrivo dei pacchetti e R bit-rate del link.Utilizzo uno script Python per calcolare tale grafico. Alleghiamo il file(graphconfig1.py).
+I dati sono esportati da Wireshark.
+Alleghiamo entrambi i files.(10.csv e 192.csv).
+Filtri usati: "ip.src==192.138.2.3" e "ip.src==10.0.3.1".
+Dal grafico è possibile notare come l'intensità di traffico sia maggiore quando i 2 clients stanno trasmettendo(parte centrale del grafico) mentre  è minore quando solo un client sta trasmettendo (parti laterali del grafico).
 
 A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus
