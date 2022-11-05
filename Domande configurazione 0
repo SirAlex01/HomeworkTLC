@@ -9,6 +9,7 @@ A tempo t=4s la quantità di dati trasmessa dal flusso TCP si può evincere dai 
     Ciò implica che fin'ora sono stati inviati 61500/1500 = 41 pacchetti. 
 Noi, tuttavia, sappiamo che ad attraversare la rete sono tre pacchetti frammentati delle dimensioni sopracitate, quindi il throughput medio sarà (1662 bytes * 41)/(4-3)s = 68142 Bps = 545 kbps. Ciò è visibile anche dall'analisi degli I/O Graphs tracciati sulla cattura dei pacchetti inviati da n4 tramite Wireshark. 
 Nel grafico che si riferisce a n2, invece, il throughput sembra più elevato, questo perché n1 modifica i pacchetti, come anticipato nella precedente risposta, aumentandone la dimensione. All'interno della lan, difatti, il throughput medio è pari a (606*2 + 498) * 41 bytes / 1 s = 70110 Bps = 561 kbps.
+P.S. viene citato l'I/O graph perché con l'uso dei filtri citati in A2 è possibile visualizzare il Throughput medio effettivo. Per una ragione a noi ignota il grafico del throughput medio generato da Wireshark per il flusso TCP utilizza le dimensioni dei payload, andando quindi a calcolare il goodput (cambiando nella frazione il numeratore che diventa 1500 B). D'ora in avanti ci riferiremo quindi agli I/O graphs per mostrare la validità del calcolo del throughput medio.
 
 C03) Calcolare il throughput medio del flusso TCP a tempo t=7.0s. Commentare eventuali cambiamenti rispetto a C02.
 A tempo t=7s l'ultimo ACK_no inviato dal server è pari a 249000, perciò sono stati inviati 166 pacchetti. Il throughput, calcolato come nella precedente risposta, risulta pari a 551 kbps. 
