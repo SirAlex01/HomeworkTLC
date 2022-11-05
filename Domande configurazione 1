@@ -11,7 +11,7 @@ Tali pacchetti, attraversando la rete, vengono però frammentati in 8 pacchetti 
 C13) Calcolare il throughput medio del flusso TCP n8 verso n2 a tempo t=8s. Commentare eventuali cambiamenti rispetto a C12.
 A tempo t = 8s il server invia ACK_no=373501 relativo all'ultimo pacchetto ricevuto, quindi in totale i pacchetti inviati da n8 finora sono 373500/4500=83.
 Quindi, con la stessa procedura utilizzata in C12, il TH medio risulta pari a ((590*8 + 266) bytes * 83) / (8-2) s = 68973 Bps = 552 kbps.
-Come già evidenziato in precedenza in C03, tale risultato ci sembra coerente con il fatto che il livello di congestione della rete è minimo, se non proprio nullo.
+Come già evidenziato in precedenza in C03, tale risultato, che si discosta di poco dal TH calcolato in C12, ci sembra coerente con il fatto che il livello di congestione della rete è minimo, se non proprio nullo.
 
 C14) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 Scelgo come nodo n3 in riferimento al quale effettuare la mia analisi.
