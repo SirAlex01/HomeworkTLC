@@ -3,6 +3,7 @@ A tempo t=5s la quantità di dati trasmessi dal flusso TCP è ricavabile dai Seq
 Tale valore si discosta di poco da quello riscontrabile dall'analisi dell'I/O Graph prodotto da Wireshark dalla cattura dei pacchetti inviati da n4.
 
 C22) Calcolare il throughput medio del flusso TCP a tempo t=7s. Commentare eventuali cambiamenti rispetto a C21.
+(?) Esce 545kbps ma si discosta di molto dall'I/O Graph (1.102Mbps) ed inoltre è piu' del doppio rispetto a C21
 
 C23) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 
