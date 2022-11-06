@@ -27,9 +27,9 @@ for i in range(1,len(joined_size)):
     if time[i]-check_time<=0.25:
         continue
     #print((r/(time[i]-check_time))*(avg_size/80000000),r,time[i])
-    I=(r/(time[i]-check_time))*(avg_size/80000000)
+    I=(r/(time[i]-check_time))*(avg_size/83886080)
     x.append(I)
-    y.append(I*(avg_size/80000000)*(1-I))
+    y.append(I*(avg_size/83886080)*(1-I))
     check_time=time[i]
     r=0
 
