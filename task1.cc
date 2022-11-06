@@ -202,10 +202,12 @@ main(int argc, char* argv[])
 
         // PCAP NODI RICHIESTI
         l0.EnablePcap("task1-0-n3",l0Devices.Get(1));
+        l1.EnablePcap("task1-0-n3",l1Devices.Get(0));
         l3.EnablePcap("task1-0-n5",l3Devices.Get(0));
+        l2.EnablePcap("task1-0-n5",l2Devices.Get(1));
         l3.EnablePcap("task1-0-n6",l3Devices.Get(1));
-        csma2.EnablePcap("task1-0-n6 prova",csma2Devices.Get(0),true);
-
+        csma2.EnablePcap("task1-0-n6",csma2Devices.Get(0));
+        l1.EnablePcap("task1-0-n6",l1Devices.Get(1));
     }
 
     else if (configuration == 1)
@@ -270,8 +272,12 @@ main(int argc, char* argv[])
 
         // PCAP NODI RICHIESTI
         l0.EnablePcap("task1-1-n3",l0Devices.Get(1));
+        l1.EnablePcap("task1-1-n3",l1Devices.Get(0));
         l3.EnablePcap("task1-1-n5",l3Devices.Get(0));
-        csma2.EnablePcap("task1-1-n6",csma2Devices.Get(0),true);
+        l2.EnablePcap("task1-1-n5",l2Devices.Get(1));
+        l3.EnablePcap("task1-1-n6",l3Devices.Get(1));
+        csma2.EnablePcap("task1-1-n6",csma2Devices.Get(0));
+        l1.EnablePcap("task1-1-n6",l1Devices.Get(1));
     }
 
     else if (configuration == 2)
@@ -370,8 +376,12 @@ main(int argc, char* argv[])
 
         // PCAP NODI RICHIESTI 
         l0.EnablePcap("task1-2-n3",l0Devices.Get(1));
+        l1.EnablePcap("task1-2-n3",l1Devices.Get(0));
         l3.EnablePcap("task1-2-n5",l3Devices.Get(0));
-        csma2.EnablePcap("task1-2-n6",csma2Devices.Get(0),true);        
+        l2.EnablePcap("task1-2-n5",l2Devices.Get(1));
+        l3.EnablePcap("task1-2-n6",l3Devices.Get(1));
+        csma2.EnablePcap("task1-2-n6",csma2Devices.Get(0));
+        l1.EnablePcap("task1-2-n6",l1Devices.Get(1));
     }
     
     else
