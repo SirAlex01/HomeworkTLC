@@ -43,6 +43,17 @@ In questa configurazione, il primo flusso TCP segue lo stesso percorso già desc
 "(tcp.srcport!=7777 && tcp.srcport!=2400)" permette di visualizzare solo i due flussi.
 
 A3) Calcolo e grafico di round trip time (RTT) e commento.
+In questa configurazione sono presenti due flussi che verranno trattati separatamente, ma il comportamento è analogo a quello descritto per configurazione 0, com'è visibile anche dal grafico.
+Flusso n8->n2:
+Calcolo per il primo pacchetto: RTT = 2,092004 - 2,089468 = 0,002536 s.
+Anche qui, talvolta l'invio dell'ACK avviene solo dopo che il client ha interrotto la trasmissione e cominciato in seguito quella del pacchetto successivo.
+Calcolo per il secondo pacchetto: RTT = 2,234074 - 2,161468 = 0,072606 s.
+Flusso n4->n0:
+Calcolo per il primo pacchetto: RTT = 5,049753 - 5,048279 = 0,001474 s.
+A causa dello stesso fenomeno sopracitato l'RTT può assumere valori sensibilmente più alti.
+Calcolo per il secondo pacchetto: RTT= 5,128814 - 5,088279 = 0,040535 s.
+
+File di cattura usati: catture Pcap su n4 e n8.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
 In questa configurazione il bottleneck è il CSMA link della rete locale che contiene il nodo n2 e il nodo n0,che sono i riceventi della comunicazione TCP tra n2 e n8 e tra n0 e n4 perchè il suo Data Rate è quello piu' basso nei collegamenti considerati. Inoltre tale link è anche condiviso dalle due comunicazioni.

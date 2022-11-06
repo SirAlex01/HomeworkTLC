@@ -39,6 +39,8 @@ Calcolo per il primo pacchetto: RTT = 3,035258 - 3,034279 = 0,000979 s.
 Come si può vedere dal grafico, alcune volte l'RTT assume valori sensibilmente più alti di quello calcolato, questo perché a volte l'invio del messaggio di ACK riferito all'ultimo frammento di un pacchetto viene inviato solo dopo che il client ha cominciato a trasmettere il pacchetto successivo, quindi con un ritardo sensibilmente più alto. 
 Questo è visibile mediante il calcolo per il secondo pacchetto: RTT = 3,082814 - 3,058279 = 0,024535 s.
 
+File di cattura usati: File di pcap su n4.
+
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
 In questa configurazione il bottleneck è il CSMA link della rete locale che contiene il nodo n2 che è il ricevente della comunicazione TCP tra n2 e n4 perchè il suo Data Rate è quello piu' basso nel collegamento considerato.
 Una possibile soluzione a ciò è aumentare la banda trasmissiva del CSMA link in oggetto oppure collegare il nodo n2 ad un altro nodo fuori dalla lan o direttamente al destinatario utilizzando un link con data rate maggiore.
