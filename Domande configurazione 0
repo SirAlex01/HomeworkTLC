@@ -9,22 +9,14 @@ A tempo t=4s la quantità di dati trasmessa dal flusso TCP si può evincere dai 
     Ciò implica che fin'ora sono stati inviati 61500/1500 = 41 pacchetti. 
 Noi, tuttavia, sappiamo che ad attraversare la rete sono tre pacchetti frammentati delle dimensioni sopracitate, quindi il throughput medio sarà (1662 bytes * 41)/(4-3)s = 68142 Bps = 545 kbps. Ciò è visibile anche dall'analisi degli I/O Graphs tracciati sulla cattura dei pacchetti inviati da n4 tramite Wireshark. 
 Nel grafico che si riferisce a n2, invece, il throughput sembra più elevato, questo perché n1 modifica i pacchetti, come anticipato nella precedente risposta, aumentandone la dimensione. All'interno della lan, difatti, il throughput medio è pari a (606*2 + 498) * 41 bytes / 1 s = 70110 Bps = 561 kbps.
-P.S. viene citato l'I/O graph perché con l'uso dei filtri citati in A2 è possibile visualizzare il Throughput medio effettivo. Per una ragione a noi ignota il grafico del throughput medio generato da Wireshark per il flusso TCP utilizza le dimensioni dei payload, andando quindi a calcolare il goodput (cambiando nella frazione il numeratore che diventa 1500 B). D'ora in avanti ci riferiremo quindi agli I/O graphs per mostrare la validità del calcolo del throughput medio.
 
 C03) Calcolare il throughput medio del flusso TCP a tempo t=7.0s. Commentare eventuali cambiamenti rispetto a C02.
 A tempo t=7s l'ultimo ACK_no inviato dal server è pari a 249000, perciò sono stati inviati 166 pacchetti. Il throughput, calcolato come nella precedente risposta, risulta pari a 551 kbps. 
 Il seguente risultato si discosta davvero di poco rispetto al precedente. Questo ci sembra un risultato evidente, poiché il livello di congestione della rete è minimo, se non nullo: il client invia un pacchetto ogni 0.024s, mentre il tempo di trasferimento per il singolo pacchetto si attesta intorno agli 0.0009 s. Ciò implica che la rete è vuota per la maggior parte del tempo e anche quando trasmette lo fa a un bitrate inferiore rispetto alla capacità del collo di bottiglia della rete, che è 25 Mbps, come si può evidenziare dalla risposta alla prima domanda.
 
 C04) Calcolare il ritardo di trasferimento complessivo di tutti i pacchetti inviati.
-Risposta Alessio:Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. 
-Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato. Perciò, una possibile stima del ritardo complessivo di ogni pacchetto inviato è pari a 499 pacchetti * 0.0009 s/pacchetto = 0.4491 s. La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai log e si può ricavare utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto. 
-
-Risposta Davide:
-Poichè non comprendiamo a pieno il significato di questa domanda procederemo mostrando il ritardo medio di un pacchetto composto da più frammenti e calcoreremo la differenza in termini di tempo dall'invio del primo pacchetto alla ricezione dell'ultimo.
-Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato.
-La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai log e si può ricavare analiticamente utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto.
-Infine si nota dall'analisi dei log che il primo pacchetto viene inviato a +3.03s mentre l'ultimo viene ricevuto a +14.98 s. Quindi la differenza tra l'invio del primo pacchetto e la ricezione dell'ultimo è 11.95 s.
-
+Sfruttando i SEQ_no e gli ACK_no si vede che durante tutta la comunicazione la quantità totale di pacchetti inviati è pari a 499. 
+Ogni pacchetto mediamente impiega 0.0009 s per essere trasferito completamente dal momento in cui viene inviato. Perciò, una possibile stima del ritardo complessivo di ogni pacchetto inviato è pari a 499 pacchetti * 0.0009 s/pacchetto = 0.4491 s. La stima per il ritardo medio del pacchetto deriva dall'analisi Wireshark dei pacchetti, calcolando la differenza tra il tempo d'arrivo dell'ultimo dei tre pacchetti frammentati al nodo n2 e la partenza del primo dei tre pacchetti dal nodo n4. Questo è il valore della differenza tra i tempi di invio e ricezione segnalata dai log e si può ricavare utilizzando il throughput istantaneo durante l'invio di un pacchetto in C0 e la grandezza in bit del pacchetto mediante la formula delay_pacchetto=Dim_pacchetti_inviati/Thp_istantaneo.
 
 A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus lineare condiviso (topologia a bus lineare).
@@ -44,7 +36,7 @@ Filtro usato: "tcp.srcport!=2400"
 A3) Calcolo e grafico di round trip time (RTT) e commento.
 Per calcolare RTT di un pacchetto generico, prendiamo la cattura del nodo del client e calcoliamo la differenza tra tempo di arrivo dell'ultimo ack e tempo di partenza del primo pacchetto (definizione di RTT), che è in linea con le aspettative e il grafico. 
 Calcolo per il primo pacchetto: RTT = 3,035258 - 3,034279 = 0,000979 s.
-Come si può vedere dal grafico, alcune volte l'RTT assume valori sensibilmente più alti di quello calcolato, questo perché a volte l'invio del messaggio di ACK riferito all'ultimo frammento di un pacchetto viene inviato solo dopo che il client ha cominciato a inviare il pacchetto successivo, quindi con un ritardo sensibilmente più alto. 
+Come si può vedere dal grafico, alcune volte l'RTT assume valori sensibilmente più alti di quello calcolato, questo perché a volte l'invio del messaggio di ACK riferito all'ultimo frammento di un pacchetto viene inviato solo dopo che il client ha cominciato a trasmettere il pacchetto successivo, quindi con un ritardo sensibilmente più alto. 
 Calcolo per il secondo pacchetto: RTT = 3,082814 - 3,058279 = 0,024535 s.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
