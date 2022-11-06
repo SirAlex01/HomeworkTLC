@@ -37,6 +37,12 @@ filtri per isolare i flussi:
 "udp.port==63" Echo Server <-> Echo Client 
 
 A3) Calcolo e grafico di round trip time (RTT) e commento.
+In questa configurazione sono presenti tre flussi che verranno, tuttavia l'RTT è definito solo per i flussi TCP, quindi verrà calcolato solo per il flusso da n4 a n2, con la stessa metologia usata per le precedenti configurazioni.
+In questa configurazione, come si evince dalla cattura sul nodo n4, la segnalazione dell'ACK per l'arrivo completo di un pacchetto arriva sempre dopo che è terminato l'invio del primo frammento del pacchetto successivo. Perciò il RTT ha sempre un valore più elevato di quelle mostrati nella parte bassa del grafico.
+Calcolo RTT per il primo pacchetto: 3,106814 − 3,058279 = 0,048535 s.
+Poiché il grafico si riferisce ai singoli frammenti dei pacchetti, per alcuni di essi l'RTT assume valori inferiori. Per mostrarlo calcoliamo l'RTT anche per il primo frammento del primo pacchetto: 3,058814 − 3,058279 = 0,000535 s.
+
+File di cattura usati: catture Pcap su n4.
 
 A4) Vi sono dei bottleneck nella rete? Se si, individuare gli eventuali link e discutere eventuali contromisure e soluzioni.
 Il bottleneck è il CSMA link della lan contenente n2 e n0. Infatti tutte le comunicazioni vengono trasmesse o ricevute passando anche attraverso questa lan. Quindi una contromisura può essere aumentare la banda del CSMA link in oggetto oppure collegare i server ai clients corrispondenti o comunque collegarli al di fuori della lan.
