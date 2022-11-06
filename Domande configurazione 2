@@ -13,7 +13,7 @@ Come nella configurazione precedente tutti i flussi utilizzano il collegamento c
 Calcolo l'intensità di traffico I=La/R con L dimensione media dei pacchetti,a tasso di arrivo dei pacchetti e R bit-rate del link.
 Mostro attraverso un grafico il ritardo di accodamento in funzione della congestione calcolato come
 I(L/R)(1-I).
-Utilizzo uno script Python per calcolare tale grafico. Alleghiamo il file(graphconfig2.py).
+Utilizzo uno script Python per calcolare tale grafico. Alleghiamo il file(graphconf2.py).
 I dati sono stati esportati da Wireshark.
 Alleghiamo entrambi il file.(conf2.csv).
 Filtri usati: "ip.src==192.138.1.3 or ip.src==10.0.3.1 or ip.src==192.138.2.2".
