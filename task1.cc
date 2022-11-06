@@ -197,7 +197,7 @@ main(int argc, char* argv[])
         // ascii trace
         // p2p.EnableAsciiAll(ascii.CreateFileStream("tcp-star-server.tr"
         csma1.EnableAscii("task1-0-n2",csma1Devices.Get(2));
-        l2.EnableAscii("task1-0-4",l2Devices.Get(0));
+        l2.EnableAscii("task1-0-n4",l2Devices.Get(0));
 
 
         // PCAP NODI RICHIESTI
@@ -392,6 +392,7 @@ main(int argc, char* argv[])
 
     // Now, do the actual simulation.
     NS_LOG_INFO("Run Simulation.");
+    Simulator::Stop(Seconds(20.0));
     Simulator::Run();
     Simulator::Destroy();
     NS_LOG_INFO("Done.");
