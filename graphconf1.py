@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
+
 
 df1 = pd.read_csv("conf1.csv")
 size1=df1["Length"].tolist()
@@ -36,8 +36,11 @@ for i in range(0,len(joined_size)):
 
 #fig.show()
 #print(y)
+plt.xlabel("congestione")
+plt.ylabel("Ritardo di accodamento")
 plt.plot(x,y)
 plt.show()
+
 
 
 

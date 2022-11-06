@@ -9,14 +9,17 @@ Le considerazioni relative al seguente risultato coincidono con quelle relative 
 
 C23) [Extra] Ritardo di accodamento vs congestione: Disegnare un grafico che mostri il ritardo di accodamento in funzione del livello di congestione in rete
 Scelgo come nodo n3 in riferimento al quale effettuare la mia analisi.
-Come nella configurazione precedente tutti i flussi utilizzano il collegamento che parte da n6 e arriva a n3..
-Calcolo l'intensità di traffico I=La/R con L dimensione media dei pacchetti,a tasso di arrivo dei pacchetti e R bit-rate del link.
+Come nella configurazione precedente tutti i flussi utilizzano il collegamento che parte da n6 e arriva a n3.
+Calcolo l'intensità di traffico I=La/R con L dimensione  dei pacchetti,a tasso di arrivo dei pacchetti e R bit-rate del link.
 Mostro attraverso un grafico il ritardo di accodamento in funzione della congestione calcolato come
 I(L/R)(1-I).
-Utilizzo uno script Python per calcolare tale grafico. Alleghiamo il file(graphconf2.py).
+Utilizzo uno script Python per calcolare tale grafico. Alleghiamo tale script(graphconf2.py).
 I dati sono stati esportati da Wireshark.
-Alleghiamo entrambi il file.(conf2.csv).
+Alleghiamo  il file contenente i dati(conf2.csv).
+File pcap utilizzato:task1-2-n3-3-1.pcap.
 Filtri usati: "ip.src==192.138.1.3 or ip.src==10.0.3.1 or ip.src==192.138.2.2".
+Si nota per ottenere il grafico che mostriamo nella risposta è necessario che il file contenente i dati sia nella stessa cartella 
+dello script python.
 
 A1) Individuare le varie topologie note che compongono la rete.
 In questa rete ci sono delle sottoreti componenti, due rete locali ethernet ciascuna delle quali utilizza un bus lineare condiviso(topologia a bus lineare).
